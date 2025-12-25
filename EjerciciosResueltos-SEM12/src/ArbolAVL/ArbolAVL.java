@@ -15,7 +15,6 @@ public class ArbolAVL {
         this.raiz = null;
     }
 
-    // Método público para insertar
     public void insertar(int valor) {
         this.raiz = insertarRecursivo(this.raiz, valor);
     }
@@ -31,7 +30,7 @@ public class ArbolAVL {
         } else if (valor > nodo.getValor()) {
             nodo.setNodoDerecha(insertarRecursivo(nodo.getNodoDerecha(), valor));
         } else {
-            return nodo; // No se permiten duplicados
+            return nodo; 
         }
 
         // 2. ACTUALIZAR ALTURA

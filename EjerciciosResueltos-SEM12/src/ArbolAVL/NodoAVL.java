@@ -8,15 +8,15 @@ package ArbolAVL;
 public class NodoAVL {
     private int valor;
     private int altura;
-    private NodoAVL nodoDerecha;
-    private NodoAVL nodoIzquierda;
+    private NodoAVL izquierdo;
+    private NodoAVL derecho;
     
     public NodoAVL(int valor){
         this.valor = valor;
         this.altura = 1;
-        this.nodoDerecha  = null;
-        this.nodoIzquierda = null;
-}
+        this.derecho = null;
+        this.izquierdo = null;
+    }
 
     public int getValor() {
         return valor;
@@ -34,20 +34,21 @@ public class NodoAVL {
         this.altura = altura;
     }
 
-    public NodoAVL getNodoDerecha() {
-        return nodoDerecha;
+    public NodoAVL getIzquierdo() {
+        return izquierdo;
     }
 
-    public void setNodoDerecha(NodoAVL nodoDerecha) {
-        this.nodoDerecha = nodoDerecha;
+    public void setIzquierdo(NodoAVL izquierdo) {
+        this.izquierdo = izquierdo;
     }
 
-    public NodoAVL getNodoIzquierda() {
-        return nodoIzquierda;
+    public NodoAVL getDerecho() {
+        return derecho;
     }
 
-    public void setNodoIzquierda(NodoAVL nodoIzquierda) {
-        this.nodoIzquierda = nodoIzquierda;
+    public void setDerecho(NodoAVL derecho) {
+        this.derecho = derecho;
     }
-
+    
+    
 }

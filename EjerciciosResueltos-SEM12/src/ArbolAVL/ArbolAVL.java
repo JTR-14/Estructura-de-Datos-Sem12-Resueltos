@@ -5,19 +5,21 @@
 package ArbolAVL;
 
 import javax.swing.DefaultListModel;
-
-
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ArbolAVL {
-  private NodoAVL raiz;
+
+    private NodoAVL raiz;
 
     public ArbolAVL() {
         this.raiz = null;
     }
 
     private int altura(NodoAVL nodo) {
-        if (nodo == null)
+        if (nodo == null) {
             return 0;
+        }
         return nodo.getAltura();
     }
 
@@ -26,8 +28,9 @@ public class ArbolAVL {
     }
 
     private int balance(NodoAVL nodo) {
-        if (nodo == null)
+        if (nodo == null) {
             return 0;
+        }
         return altura(nodo.getIzquierdo()) - altura(nodo.getDerecho());
     }
 
@@ -62,25 +65,29 @@ public class ArbolAVL {
     }
 
     private NodoAVL insertar(NodoAVL nodo, int valor) {
-        if (nodo == null)
+        if (nodo == null) {
             return (new NodoAVL(valor));
+        }
 
-        if (valor < nodo.getValor())
+        if (valor < nodo.getValor()) {
             nodo.setIzquierdo(insertar(nodo.getIzquierdo(), valor));
-        else if (valor > nodo.getValor())
+        } else if (valor > nodo.getValor()) {
             nodo.setDerecho(insertar(nodo.getDerecho(), valor));
-        else
+        } else {
             return nodo;
+        }
 
         nodo.setAltura(1 + max(altura(nodo.getIzquierdo()), altura(nodo.getDerecho())));
 
         int balance = balance(nodo);
 
-        if (balance > 1 && valor < nodo.getIzquierdo().getValor())
+        if (balance > 1 && valor < nodo.getIzquierdo().getValor()) {
             return rotarDerecha(nodo);
+        }
 
-        if (balance < -1 && valor > nodo.getDerecho().getValor())
+        if (balance < -1 && valor > nodo.getDerecho().getValor()) {
             return rotarIzquierda(nodo);
+        }
 
         if (balance > 1 && valor > nodo.getIzquierdo().getValor()) {
             nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
@@ -100,8 +107,9 @@ public class ArbolAVL {
     }
 
     private NodoAVL eliminar(NodoAVL nodo, int valor) {
-        if (nodo == null)
+        if (nodo == null) {
             return nodo;
+        }
 
         if (valor < nodo.getValor()) {
             nodo.setIzquierdo(eliminar(nodo.getIzquierdo(), valor));
@@ -123,16 +131,18 @@ public class ArbolAVL {
 
         int balance = balance(nodo);
 
-        if (balance > 1 && balance(nodo.getIzquierdo()) >= 0)
+        if (balance > 1 && balance(nodo.getIzquierdo()) >= 0) {
             return rotarDerecha(nodo);
+        }
 
         if (balance > 1 && balance(nodo.getIzquierdo()) < 0) {
             nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
             return rotarDerecha(nodo);
         }
 
-        if (balance < -1 && balance(nodo.getDerecho()) <= 0)
+        if (balance < -1 && balance(nodo.getDerecho()) <= 0) {
             return rotarIzquierda(nodo);
+        }
 
         if (balance < -1 && balance(nodo.getDerecho()) > 0) {
             nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
@@ -143,63 +153,98 @@ public class ArbolAVL {
     }
 
     private NodoAVL minimoValor(NodoAVL nodo) {
-        if (nodo.getIzquierdo() == null)
+        if (nodo.getIzquierdo() == null) {
             return nodo;
+        }
         return minimoValor(nodo.getIzquierdo());
     }
-  
+
     public boolean buscar(int valor) {
         return buscar(raiz, valor);
     }
 
     private boolean buscar(NodoAVL nodo, int valor) {
-        if (nodo == null) return false;
-        
-        if (valor == nodo.getValor()) return true;
-        
-        if (valor < nodo.getValor())
+        if (nodo == null) {
+            return false;
+        }
+
+        if (valor == nodo.getValor()) {
+            return true;
+        }
+
+        if (valor < nodo.getValor()) {
             return buscar(nodo.getIzquierdo(), valor);
-        else
+        } else {
             return buscar(nodo.getDerecho(), valor);
+        }
     }
+
     public void inOrden(DefaultListModel modelo) {
         modelo.removeAllElements();
         inOrden(raiz, modelo);
     }
-    private void inOrden(NodoAVL nodo, DefaultListModel modelo) {      
-        
+
+    private void inOrden(NodoAVL nodo, DefaultListModel modelo) {
+
         if (nodo != null) {
             inOrden(nodo.getIzquierdo(), modelo);
             modelo.addElement(nodo.getValor());
-            inOrden(nodo.getDerecho(),modelo);
+            inOrden(nodo.getDerecho(), modelo);
         }
     }
-    
+
     public void preOrden(DefaultListModel modelo) {
         modelo.removeAllElements();
         preOrden(raiz, modelo);
     }
+
     private void preOrden(NodoAVL nodo, DefaultListModel modelo) {
-        
+
         if (nodo != null) {
             modelo.addElement(nodo.getValor());
             preOrden(nodo.getIzquierdo(), modelo);
-            preOrden(nodo.getDerecho(),modelo);
+            preOrden(nodo.getDerecho(), modelo);
         }
     }
-    
+
     public void postOrden(DefaultListModel modelo) {
         modelo.removeAllElements();
         postOrden(raiz, modelo);
     }
+
     private void postOrden(NodoAVL nodo, DefaultListModel modelo) {
-        
+
         if (nodo != null) {
             postOrden(nodo.getIzquierdo(), modelo);
-            postOrden(nodo.getDerecho(),modelo);
+            postOrden(nodo.getDerecho(), modelo);
             modelo.addElement(nodo.getValor());
         }
     }
-    
-}
 
+    public void porNiveles(DefaultListModel modelo) {
+        modelo.removeAllElements();
+
+        if (raiz == null) {
+            return;
+        }
+
+        Queue<NodoAVL> cola = new LinkedList<>();
+        cola.offer(raiz);
+
+        while (!cola.isEmpty()) {
+            NodoAVL nodoActual = cola.poll();
+
+            if (nodoActual != null) {
+                modelo.addElement(nodoActual.getValor());
+                if (nodoActual.getIzquierdo() != null) {
+                    cola.offer(nodoActual.getIzquierdo());
+                }
+
+                if (nodoActual.getDerecho() != null) {
+                    cola.offer(nodoActual.getDerecho());
+                }
+
+            }
+        }
+    }
+}

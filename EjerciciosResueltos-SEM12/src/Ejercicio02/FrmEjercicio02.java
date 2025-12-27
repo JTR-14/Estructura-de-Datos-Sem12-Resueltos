@@ -4,17 +4,23 @@
  */
 package Ejercicio02;
 
+import ArbolAVL.ArbolAVL;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author USER
  */
 public class FrmEjercicio02 extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmEjercicio02
-     */
+    DefaultListModel recorrido = new DefaultListModel();
+    DefaultListModel rotaciones = new DefaultListModel();
+    ArbolAVL arbol = new ArbolAVL();
     public FrmEjercicio02() {
         initComponents();
+        lstRecorrido.setModel(recorrido);
+        lstRotaciones.setModel(rotaciones);
     }
 
     /**
@@ -44,6 +50,11 @@ public class FrmEjercicio02 extends javax.swing.JFrame {
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
         btnAgregar.setText("AGREGAR");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         txtNumero.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
         txtNumero.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Número:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI Emoji", 1, 12))); // NOI18N
@@ -58,6 +69,11 @@ public class FrmEjercicio02 extends javax.swing.JFrame {
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
         btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout bg1Layout = new javax.swing.GroupLayout(bg1);
         bg1.setLayout(bg1Layout);
@@ -75,11 +91,15 @@ public class FrmEjercicio02 extends javax.swing.JFrame {
                     .addGroup(bg1Layout.createSequentialGroup()
                         .addGap(76, 76, 76)
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(bg1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(bg1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90))
+                    .addGroup(bg1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         bg1Layout.setVerticalGroup(
             bg1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,6 +144,47 @@ public class FrmEjercicio02 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if(txtNumero.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese numero entero","Aviso",1);
+            return;
+        }
+        try{
+            numero = Integer.parseInt(txtNumero.getText().trim());
+            arbol.insertar(numero);
+            arbol.porNiveles(recorrido);
+            limpiar();
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Debe ingresar numero entero","Error",0);
+            limpiar();
+        }
+        
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        String texto =  JOptionPane.showInputDialog(null,"Ingrese numero a eliminar","Mensaje",1);
+        if(texto == null)
+            return;
+        if(texto.trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Ingrese numero entero","Mensaje",1);
+            return;
+        }
+        try{
+            numero = Integer.parseInt(texto.trim());
+            arbol.eliminar(numero);
+            arbol.porNiveles(recorrido);
+            arbol.limpiarLista();
+            arbol.listaRotaciones(rotaciones);
+            limpiar();
+            
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "El dato no es entero","Error",0);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+    public void limpiar(){
+        txtNumero.setText("");
+        txtNumero.requestFocus();
+    }
     /**
      * @param args the command line arguments
      */
@@ -140,4 +201,5 @@ public class FrmEjercicio02 extends javax.swing.JFrame {
     private javax.swing.JList<String> lstRotaciones;
     private javax.swing.JTextField txtNumero;
     // End of variables declaration//GEN-END:variables
+    private int numero;
 }

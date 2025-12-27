@@ -4,16 +4,20 @@
  */
 package ArbolAVL;
 
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
 public class ArbolAVL {
 
     private NodoAVL raiz;
+    private ArrayList<String> listaRotaciones;
 
     public ArbolAVL() {
         this.raiz = null;
+        this.listaRotaciones = new ArrayList<>();
     }
 
     private int altura(NodoAVL nodo) {
@@ -82,26 +86,43 @@ public class ArbolAVL {
         int balance = balance(nodo);
 
         if (balance > 1 && valor < nodo.getIzquierdo().getValor()) {
+            listaRotaciones.add("Rotacion LL en nodo pivote: "+ nodo.getValor());
             return rotarDerecha(nodo);
         }
 
         if (balance < -1 && valor > nodo.getDerecho().getValor()) {
+            listaRotaciones.add("Rotacion RR en nodo pivote: "+ nodo.getValor());
             return rotarIzquierda(nodo);
         }
 
         if (balance > 1 && valor > nodo.getIzquierdo().getValor()) {
+            listaRotaciones.add("Rotacion LR en nodo pivote: "+ nodo.getValor());
             nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
             return rotarDerecha(nodo);
         }
 
         if (balance < -1 && valor < nodo.getDerecho().getValor()) {
+            listaRotaciones.add("Rotacion RL en nodo pivote: "+ nodo.getValor());
             nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
             return rotarIzquierda(nodo);
         }
 
         return nodo;
     }
-
+    public void limpiarLista(){
+        listaRotaciones.clear();
+    }
+    public void listaRotaciones(DefaultListModel modelo){
+        modelo.removeAllElements();
+        if(listaRotaciones.isEmpty()){
+            modelo.addElement("El arbol no tiene ninguna rotación");
+            return;
+        }
+        for(String rotacion:listaRotaciones){
+            modelo.addElement(rotacion);
+        }
+    }
+    
     public void eliminar(int valor) {
         raiz = eliminar(raiz, valor);
     }
@@ -132,19 +153,23 @@ public class ArbolAVL {
         int balance = balance(nodo);
 
         if (balance > 1 && balance(nodo.getIzquierdo()) >= 0) {
+             listaRotaciones.add("Rotacion LL en nodo pivote: "+ nodo.getValor());
             return rotarDerecha(nodo);
         }
 
         if (balance > 1 && balance(nodo.getIzquierdo()) < 0) {
+            listaRotaciones.add("Rotacion LR en nodo pivote: "+ nodo.getValor());
             nodo.setIzquierdo(rotarIzquierda(nodo.getIzquierdo()));
             return rotarDerecha(nodo);
         }
 
         if (balance < -1 && balance(nodo.getDerecho()) <= 0) {
+            listaRotaciones.add("Rotacion RR en nodo pivote: "+ nodo.getValor());
             return rotarIzquierda(nodo);
         }
 
         if (balance < -1 && balance(nodo.getDerecho()) > 0) {
+            listaRotaciones.add("Rotacion RL en nodo pivote: "+ nodo.getValor());
             nodo.setDerecho(rotarDerecha(nodo.getDerecho()));
             return rotarIzquierda(nodo);
         }
